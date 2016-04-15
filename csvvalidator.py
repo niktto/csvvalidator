@@ -451,6 +451,12 @@ class CSVValidator(object):
 
         unique_sets = self._init_unique_sets() # used for unique checks
         for i, r in enumerate(data):
+
+            # row is extended by missing number of columns to match
+            # len of headers row
+            if len(self._field_names) > len(r):
+                r = r + ['' for x in range(len(self._field_names) - len(r))]
+
             if expect_header_row and i == ignore_lines:
                 # r is the header row
                 for p in self._apply_header_checks(i, r, summarize, context):
